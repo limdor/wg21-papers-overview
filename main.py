@@ -1308,6 +1308,9 @@ def get_github_issues_with_plenary_approved():
     return plenary_approved_issues
 
 def is_plenary_approved(paper_number, plenary_aproved_github_issues):
+    github_issue_number = GITHUB_ISSUE.get(paper_number)
+    if github_issue_number:
+        return github_issue_number in plenary_approved_github_issues
     # Give some time between requests
     time.sleep(0.05)
     response = requests.get(f'https://wg21.link/{paper_number}/github')
