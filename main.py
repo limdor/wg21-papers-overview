@@ -1295,14 +1295,16 @@ def extract_target_groups(target_groups_text):
             raise RuntimeError
 
 def get_github_issues_with_plenary_approved():
-    plenary_approved_issues = []
-    # TODO: Implement pagination
-    with urllib.request.urlopen("https://api.github.com/repos/cplusplus/papers/issues?state=all&labels=plenary-approved") as url:
-        data = json.load(url)
+    plenary_approved_issues = set()
+    url_to_load = "https://api.github.com/repos/cplusplus/papers/issues?state=all&labels=plenary-approved"
+    while url_to_load:
+        response = requests.get(url_to_load)
+        data = response.json()
         for element in data:
             if element['number']:
-                plenary_approved_issues.append(element['number'])
-    print(f"Found {len(plenary_approved_issues)} plenary approved issues")
+                plenary_approved_issues.add(element['number'])
+        next = response.links.get('next')
+        url_to_load = next['url'] if next else None
     return plenary_approved_issues
 
 def is_plenary_approved(paper_number, plenary_aproved_github_issues):
