@@ -75,8 +75,15 @@ def create_paper_from_table_entry(potential_paper_row):
     paper_revision = match.group(2)
     paper_title = paper_columns[1].text.strip()
     paper_mailing = paper_columns[4].text.strip()
-    paper_target = extract_target_groups(paper_columns[6].text.strip())
-    return PaperMailingEntry(number=paper_number, title=paper_title, revision=paper_revision, target=paper_target, mailing=paper_mailing)
+    paper_target = list(extract_target_groups(paper_columns[6].text.strip()))
+    return PaperMailingEntry(
+        number=paper_number,
+        title=paper_title,
+        revision=paper_revision,
+        target=paper_target,
+        mailing=paper_mailing,
+    )
+
 
 def combined_revisions_for_printing(paper_revisions):
     if not paper_revisions:
