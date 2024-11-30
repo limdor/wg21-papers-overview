@@ -57,6 +57,7 @@ def is_plenary_approved(paper_number, plenary_aproved_github_issues):
     match = re.search(r"issues/(\d+)", response.url)
     if match:
         github_issue_number = match.group(1)
+        print(f"    '{paper_number}': {github_issue_number},")
         return github_issue_number in plenary_aproved_github_issues
     else:
         print(f"No issue found for paper {paper_number}: {response.status_code} {response.url}")
@@ -156,6 +157,8 @@ def collect_paper_mailing_entries(urls):
 if __name__ == "__main__":
     new_mailings = mailings_since_last_plenary()
     plenary_approved_github_issues = get_github_issues_with_plenary_approved()
+
+    print(f"Found {len(plenary_approved_github_issues)} issues")
 
     papers = aggregate_paper_mailing_entries(collect_paper_mailing_entries(URLS), plenary_approved_github_issues)
     papers_per_target = defaultdict(list)
