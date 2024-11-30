@@ -14,17 +14,24 @@ Paper = namedtuple("Paper", ["number", "title", "revisions", "plenary_approved"]
 def date_latest_plenary():
     return [plenary_date for plenary_date in sorted(ISO_CPP_PLENARIES.keys()) if plenary_date < datetime.date.today()][-1]
 
+
 def mailings_since_last_plenary():
-    return [mailing for mailing, mailing_date in MAILING_DATES.items() if mailing_date < datetime.date.today() and mailing_date > date_latest_plenary()]
+    return [
+        mailing
+        for mailing, mailing_date in MAILING_DATES.items()
+        if mailing_date < datetime.date.today() and mailing_date > date_latest_plenary()
+    ]
+
 
 def extract_target_groups(target_groups_text):
-    for target in target_groups_text.split(','):
+    for target in target_groups_text.split(","):
         stripped_target = target.strip()
         if stripped_target in WG_ABREVIATIONS:
             yield WG_ABREVIATIONS[stripped_target]
         else:
-            print(f'Unrecognized target group: {stripped_target}')
+            print(f"Unrecognized target group: {stripped_target}")
             raise RuntimeError
+
 
 def get_github_issues_with_plenary_approved():
     plenary_approved_issues = set()
@@ -33,11 +40,12 @@ def get_github_issues_with_plenary_approved():
         response = requests.get(url_to_load)
         data = response.json()
         for element in data:
-            if element['number']:
-                plenary_approved_issues.add(element['number'])
-        next = response.links.get('next')
-        url_to_load = next['url'] if next else None
+            if element["number"]:
+                plenary_approved_issues.add(element["number"])
+        next = response.links.get("next")
+        url_to_load = next["url"] if next else None
     return plenary_approved_issues
+
 
 def is_plenary_approved(paper_number, plenary_aproved_github_issues):
     github_issue_number = GITHUB_ISSUE.get(paper_number)
@@ -45,7 +53,7 @@ def is_plenary_approved(paper_number, plenary_aproved_github_issues):
         return github_issue_number in plenary_approved_github_issues
     # Give some time between requests
     time.sleep(0.05)
-    response = requests.get(f'https://wg21.link/{paper_number}/github')
+    response = requests.get(f"https://wg21.link/{paper_number}/github")
     match = re.search(r"issues/(\d+)", response.url)
     if match:
         github_issue_number = match.group(1)
@@ -53,6 +61,7 @@ def is_plenary_approved(paper_number, plenary_aproved_github_issues):
     else:
         print(f"No issue found for paper {paper_number}: {response.status_code} {response.url}")
         return False
+
 
 def create_paper_from_table_entry(potential_paper_row):
     paper_columns = potential_paper_row.find_all("td")
@@ -71,28 +80,42 @@ def create_paper_from_table_entry(potential_paper_row):
 def combined_revisions_for_printing(paper_revisions):
     if not paper_revisions:
         return []
-    CombinedRevision = namedtuple('CombinedRevision', ['revisions', 'target', 'mailings'])
-    combined_revisions = [CombinedRevision(revisions=[paper_revisions[0].number], target=paper_revisions[0].target, mailings=[paper_revisions[0].mailing])]
+    CombinedRevision = namedtuple("CombinedRevision", ["revisions", "target", "mailings"])
+    combined_revisions = [
+        CombinedRevision(
+            revisions=[paper_revisions[0].number],
+            target=paper_revisions[0].target,
+            mailings=[paper_revisions[0].mailing],
+        )
+    ]
     for paper_revision in paper_revisions[1:]:
         if paper_revision.target == combined_revisions[-1].target:
             combined_revisions[-1].revisions.append(paper_revision.number)
             combined_revisions[-1].mailings.append(paper_revision.mailing)
         else:
-            combined_revisions.append(CombinedRevision(revisions=[paper_revision.number], target=paper_revision.target, mailings=[paper_revision.mailing]))
+            combined_revisions.append(
+                CombinedRevision(
+                    revisions=[paper_revision.number],
+                    target=paper_revision.target,
+                    mailings=[paper_revision.mailing],
+                )
+            )
     return combined_revisions
+
 
 def print_paper(paper, new_mailings):
     new_paper = False
     combined_revisions = combined_revisions_for_printing(paper.revisions)
     for combined_revision in combined_revisions:
-        if 'R0' in combined_revision.revisions and combined_revision.mailings[combined_revision.revisions.index('R0')] in new_mailings:
+        if "R0" in combined_revision.revisions and combined_revision.mailings[combined_revision.revisions.index("R0")] in new_mailings:
             new_paper = True
-    new_text = ' **(NEW)**' if new_paper else ''
-    approved_text = ' **(APPROVED)**' if paper.plenary_approved else ''
+    new_text = " **(NEW)**" if new_paper else ""
+    approved_text = " **(APPROVED)**" if paper.plenary_approved else ""
     print(f"- [{paper.number}](https://wg21.link/{paper.number}/github) {paper.title}{new_text}{approved_text}")
     for combined_revision in combined_revisions:
         revisions_with_links = [f"[{revision}](https://wg21.link/{paper.number}{revision})" for revision in combined_revision.revisions]
         print(f"  - {", ".join(revisions_with_links)} for {", ".join(combined_revision.target)} in {", ".join(combined_revision.mailings)}")
+
 
 def aggregate_paper_mailing_entries(paper_mailing_entries, plenary_approved_github_issues):
     papers = dict()
@@ -101,7 +124,7 @@ def aggregate_paper_mailing_entries(paper_mailing_entries, plenary_approved_gith
         paper_revision = PaperRevision(
             number=paper_mailing_entry.revision,
             target=paper_mailing_entry.target,
-            mailing=paper_mailing_entry.mailing
+            mailing=paper_mailing_entry.mailing,
         )
         if paper_mailing_entry.number in papers:
             papers[paper_mailing_entry.number].revisions.append(paper_revision)
@@ -110,12 +133,13 @@ def aggregate_paper_mailing_entries(paper_mailing_entries, plenary_approved_gith
                 number=paper_mailing_entry.number,
                 title=paper_mailing_entry.title,
                 revisions=[paper_revision],
-                plenary_approved=is_plenary_approved(paper_mailing_entry.number, plenary_approved_github_issues)
+                plenary_approved=is_plenary_approved(paper_mailing_entry.number, plenary_approved_github_issues),
             )
         papers_mailing_entries_processed += 1
         if papers_mailing_entries_processed % 50 == 0:
             print(f"Processed {papers_mailing_entries_processed} mailing entries resulting in {len(papers)} papers")
     return papers.values()
+
 
 def collect_paper_mailing_entries(urls):
     for url in urls:
@@ -128,7 +152,8 @@ def collect_paper_mailing_entries(urls):
             if paper_mailing_entry:
                 yield paper_mailing_entry
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     new_mailings = mailings_since_last_plenary()
     plenary_approved_github_issues = get_github_issues_with_plenary_approved()
 
