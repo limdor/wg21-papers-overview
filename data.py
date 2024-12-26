@@ -26,6 +26,7 @@ MAILING_DATES = {
     "2023-09": datetime.date(2023, 9, 17),
     "2023-10": datetime.date(2023, 10, 15),
     "2023-12": datetime.date(2023, 12, 18),
+    "2024-12": datetime.date(2024, 12, 17),
     "2024-10": datetime.date(2024, 10, 16),
     "2024-09": datetime.date(2024, 9, 17),
     "2024-08": datetime.date(2024, 8, 15),
