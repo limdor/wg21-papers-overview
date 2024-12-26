@@ -181,7 +181,7 @@ if __name__ == "__main__":
         if new_paper:
             updated_papers.append(paper)
 
-    print("# Paper update report since last plenary")
+    print(f"# Paper update report since last plenary (Mailings: {new_mailings})")
     print("")
     print("## About this report")
     print("")
