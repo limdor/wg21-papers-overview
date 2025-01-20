@@ -5,6 +5,7 @@ URLS = [
     "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/",
     "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/",
     "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/",
+    "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/",
 ]
 
 ISO_CPP_PLENARIES = {
@@ -18,6 +19,7 @@ ISO_CPP_PLENARIES = {
     datetime.date(2024, 6, 29): "St. Louis, USA",
     datetime.date(2024, 11, 23): "Wrocław, Poland",
     datetime.date(2025, 2, 15): "Hagenberg, Austria",
+    datetime.date(2025, 6, 21): "Sofia, Bulgaria",
 }
 
 MAILING_DATES = {
@@ -26,15 +28,16 @@ MAILING_DATES = {
     "2023-09": datetime.date(2023, 9, 17),
     "2023-10": datetime.date(2023, 10, 15),
     "2023-12": datetime.date(2023, 12, 18),
-    "2024-12": datetime.date(2024, 12, 17),
-    "2024-10": datetime.date(2024, 10, 16),
-    "2024-09": datetime.date(2024, 9, 17),
-    "2024-08": datetime.date(2024, 8, 15),
-    "2024-07": datetime.date(2024, 7, 16),
-    "2024-05": datetime.date(2024, 5, 22),
-    "2024-04": datetime.date(2024, 4, 16),
-    "2024-02": datetime.date(2024, 2, 15),
     "2024-01": datetime.date(2024, 1, 16),
+    "2024-02": datetime.date(2024, 2, 15),
+    "2024-04": datetime.date(2024, 4, 16),
+    "2024-05": datetime.date(2024, 5, 22),
+    "2024-07": datetime.date(2024, 7, 16),
+    "2024-08": datetime.date(2024, 8, 15),
+    "2024-09": datetime.date(2024, 9, 17),
+    "2024-10": datetime.date(2024, 10, 16),
+    "2024-12": datetime.date(2024, 12, 17),
+    "2025-01": datetime.date(2025, 1, 13),
 }
 
 PAPERS_APPROVED_IN_WROCLAW = [
@@ -1291,6 +1294,7 @@ GITHUB_ISSUE = {
     "P3541": 2178,
     "P3542": 2179,
     "P3543": 2180,
+    "P0149": 2223,
 }
 
 WG_ABREVIATIONS = {
