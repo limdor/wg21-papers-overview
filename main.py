@@ -189,6 +189,9 @@ if __name__ == "__main__":
     print("For each paper that has an update since last plenary meeting, all known revisions are printed with the different target groups.")
     print("The paper contains the label **(NEW)** if no version of the paper was existing before the previous plenary.")
     print("")
+    print("A paper on the list does not necessary mean that it will be discussed during the plenary. If you want")
+    print("to know if it is sheduled, you need to check the agenda of the different study groups.")
+    print("")
 
     for target in sorted(papers_per_target):
         papers = papers_per_target.get(target)
