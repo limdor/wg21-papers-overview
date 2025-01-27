@@ -192,13 +192,19 @@ if __name__ == "__main__":
 
     for target, papers in papers_per_target.items():
         if papers:
-            print(f"## Papers updated targeting {target}")
+            print("<details>")
+            print("")
+            print(f"<summary><h2>Papers updated targeting {target}</h2></summary>")
             print("")
             for paper in papers:
                 print_paper(paper, new_mailings)
             print("")
+            print("</details>")
+            print("")
 
-    print("## All papers updated")
+    print("<details>")
+    print("<summary><h2>All papers updated</h2></summary>")
     print("")
     for paper in updated_papers:
         print_paper(paper, new_mailings)
+    print("</details>")
