@@ -190,7 +190,8 @@ if __name__ == "__main__":
     print("The paper contains the label **(NEW)** if no version of the paper was existing before the previous plenary.")
     print("")
 
-    for target, papers in papers_per_target.items():
+    for target in sorted(papers_per_target):
+        papers = papers_per_target.get(target)
         if papers:
             print("<details>")
             print("")
