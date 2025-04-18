@@ -20,6 +20,7 @@ ISO_CPP_PLENARIES = {
     datetime.date(2024, 11, 23): "Wrocław, Poland",
     datetime.date(2025, 2, 15): "Hagenberg, Austria",
     datetime.date(2025, 6, 21): "Sofia, Bulgaria",
+    datetime.date(2025, 11, 8): "Kona, USA",
 }
 
 MAILING_DATES = {
@@ -39,6 +40,7 @@ MAILING_DATES = {
     "2024-12": datetime.date(2024, 12, 17),
     "2025-01": datetime.date(2025, 1, 13),
     "2025-03": datetime.date(2025, 3, 18),
+    "2025-04": datetime.date(2025, 4, 16),
 }
 
 PAPERS_APPROVED_IN_WROCLAW = [
@@ -84,7 +86,15 @@ GITHUB_ISSUE = {
     "P2093": 884,
     "P2168": 865,
     "P2210": 912,
+    "P1789": 535,
     "P2216": 919,
+    "P3667": 2297,
+    "P3668": 2298,
+    "P3669": 2299,
+    "P3670": 2300,
+    "P3671": 2301,
+    "P3672": 2302,
+    "P3514": 2295,
     "P2232": 965,
     "P2244": 966,
     "P2245": 967,
@@ -199,6 +209,7 @@ GITHUB_ISSUE = {
     "P3662": 2291,
     "P3663": 2292,
     "P3664": 2293,
+    "P3665": 2296,
     "P1875": 625,
     "P2025": 756,
     "P2041": 771,
